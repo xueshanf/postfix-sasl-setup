@@ -2,7 +2,7 @@
 
 Postfix version used in this documentation is 2.9.6-2. All change made to /etc/postfix/main.cf and /etc/postfix/master.cf need a Postfix service reload. You should adjust your setup with your own domain and SASL user database.
 
-An in-depth details can be found [here](http://www.postfix.org/SASL_README.html).... 
+An in-depth details can be found [here](http://www.postfix.org/SASL_README.html).
 
 * [Install SASL libaries](#install-package)
 * [Configure Postfix to use SASL and saslauthd](#smtpd-conf)
@@ -11,6 +11,7 @@ An in-depth details can be found [here](http://www.postfix.org/SASL_README.html)
 * [Create sasldb2 with sasl users and password](#create-users)
 * [Test send email](#test-send)
 * [Use an alternate SMTP port](#alternate-port)
+* [Configure email client](#email-client)
 
 ### <a name="install-package"></a> Install SASL libraries
 
@@ -102,7 +103,7 @@ Verify:
 # sasldblistusers2
 mail@somedomain.com: userPassword
 ```
-Make sure postfix can read db:
+Make sure Postfix user can read sasldb:
 
 ```
 # chown postfix:postfix /etc/sasldb2
@@ -116,9 +117,11 @@ Generate base64 authentication string, for example, to use *plain* authenticatio
 $ gen-auth plain
 Username: username@somedomain.com
 Password: password
-Auth String: AHNmZW5nQHN0YW5mb3JkLmVkdQBmb29iYXI=
+Auth String:  AFVzZXJuYW1lOiB1c2VybmFtZUBzb21lZG9tYWluLmNvbQBwYXNzd29yZA==
 ```
-You can also use *login* method You will have two base64 encoded authentication string, one for username, one for password. 
+
+You can also use *login* method. You will have two base64 encoded authentication strings, one for username, one for password, and
+in the test below you use "AUTH LOGIN" for the authentication dialog. 
 
 Test smtp over TLS:
 
@@ -134,7 +137,7 @@ EHLO somedomain.com
 250-ENHANCEDSTATUSCODES
 250-8BITMIME
 250 DSN
-AUTH PLAIN AHNmZW5nQHN0YW5mb3JkLmVkdQBmb29iYXI=
+AUTH PLAIN  AFVzZXJuYW1lOiB1c2VybmFtZUBzb21lZG9tYWluLmNvbQBwYXNzd29yZA==
 235 2.7.0 Authentication successful
 ...
 mail from: <someuser@somdomain.com>
@@ -154,3 +157,12 @@ Edit /etc/postfix/master.cf and add a line (keep your smtp line if you still wan
 ```
 2525 inet  n  -       -       -       -      smtpd
 ```
+### <a name="email-client"></a> Configure email client
+Configurations for email clients depends on what software you use. In general you should use these settings:
+
+* SMTP_HOST: \<your Postifix server\>
+* SMTP_PORT: \<your Postfix port\>
+* SMTP_USERNAME: \<sasl username, e.g. username@somedomain.com\>
+* SMTP_USERPASS: \<sasl user password\>
+* SMTP_STARTTLS: true
+* SMTP_AUTH: login or plain
