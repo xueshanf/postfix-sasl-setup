@@ -33,8 +33,7 @@ Enable SASL in Postfix, enforce TLS. In /etc/postfix/main.cf file:
 ```
 smtpd_sasl_auth_enable = yes
 smtpd_sasl_path = smtpd
-#smtpd_sasl_security_options = noanonymous, noplaintext
-smtpd_sasl_tls_security_options = noanonymous
+smtpd_sasl_security_options = noanonymous, noplaintext
 smtpd_sasl_local_domain =
 
 ...
@@ -60,8 +59,8 @@ Allow authenticated users to relay. In /etc/postfix/main.cf:
 
 ```
 smtpd_recipient_restrictions =
-    permit_sasl_authenticated,
     reject_unknown_recipient_domain,
+    permit_sasl_authenticated,
     reject_non_fqdn_recipient,
     reject_unauth_destination
 ```
