@@ -1,8 +1,8 @@
 ## Configure a Postfix server to allow SASL authentication 
 
-You should adjust your configuration with your own domain, and SASL user database.
+Postfix version used in this documentation is 2.9.6-2. All change made to /etc/postfix/main.cf and /etc/postfix/master.cf need a Postfix service reload. You should adjust your setup with your own domain and SASL user database.
 
-All change made to /etc/postfix/main.cf and /etc/postfix/master.cf need a Postfix service reload. 
+An in-depth details can be found [here](http://www.postfix.org/SASL_README.html).... 
 
 * [Install SASL libaries](#install-package)
 * [Configure Postfix to use SASL and saslauthd](#smtpd-conf)
