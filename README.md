@@ -4,14 +4,22 @@ You should adjust your configuration with your own domain, and SASL user databas
 
 All change made to /etc/postfix/main.cf and /etc/postfix/master.cf need a Postfix service reload. 
 
-### Install SASL libraries
+* [Install SASL libaries](#install-package)
+* [Configure Postfix to use SASL and saslauthd](#smtpd-conf)
+* [Configure Postfix service](#main-cf)
+* [Enable saslauthd](#saslauthd)
+* [Create sasldb2 with sasl users and password](#create-users)
+* [Test send email](#test-send)
+* [Use an alternate SMTP port](#alternate-port)
+
+### <a name="install-package"></a> Install SASL libraries
 
 ```
 # apt-get update
 # apt-get install sasl2-bin libsasl2-2 libsasl2-modules
 ```
 
-### Configure Postfix to use SASL and saslauthd
+### <a name="smtpd-conf"></a> Configure Postfix to use SASL and saslauthd
 
 In /etc/postfix/sasl/smtpd.conf:
 
@@ -26,7 +34,7 @@ Copy the file to /usr/lib/sasl2 directory because libssal uses that location
 # cp /etc/postfix/sasl/smtpd.conf  /usr/lib/sasl2/smtpd.conf
 ```
 
-### Configure Postfix service
+### <a name="main-cf"></a> Configure Postfix service
 
 Enable SASL in Postfix, enforce TLS. In /etc/postfix/main.cf file:
 
@@ -65,7 +73,7 @@ smtpd_recipient_restrictions =
     reject_unauth_destination
 ```
 
-### Enbable saslauthd
+### <a name="saslauthd"></a> Enbable saslauthd
 Edit /etc/default/saslauthd to use saslauthd. The last option  depends on if Postfix is runnign in chroot. Read
 the comments in the file for details. 
 
@@ -83,8 +91,7 @@ Start saslauthd
 # service saslauthd start
 ```
 
-### Create sasl users and password for sasl authentication
-
+### <a name="create-users"></a> Create sasldb2 with users and password
 ```
 # saslpasswd2 -c -u somedomain.com -a smtpauth username
 ```
@@ -101,7 +108,7 @@ Make sure postfix can read db:
 # chown postfix:postfix /etc/sasldb2
 ```
 
-### Test send email
+### <a name="test-send"></a> Test send email
 
 Generate base64 authentication string, for example, to use *plain* authentication method:
 
@@ -138,7 +145,7 @@ some message
 
 ```
 
-### Use an alternate SMTP port
+### <a name="alternate-port"></a> Use an alternate SMTP port
 When cloud or ISP providers block outgoing port SMTP port 25, or other well known smtp ports, 
 you can configure Postfix to run on a differrent port. Make sure you open firewall rule to allow that port.
 
