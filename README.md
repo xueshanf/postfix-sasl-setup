@@ -59,7 +59,7 @@ smtpd_tls_mandatory_exclude_ciphers = aNULL
 
 smtpd_tls_loglevel               = 1
 smtpd_tls_received_header        = yes
-smtpd_tls_security_level         = may
+smtpd_tls_security_level         = encrypt
 smtpd_tls_session_cache_database = btree:/var/run/postfix/smtpd_scache
 
 ```
