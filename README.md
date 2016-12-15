@@ -4,6 +4,8 @@ Postfix version used in this documentation is 2.9.6-2. All change made to /etc/p
 
 An in-depth details can be found [here](http://www.postfix.org/SASL_README.html).
 
+## Table of Content
+
 * [Install SASL libaries](#install-package)
 * [Configure Postfix to use SASL and saslauthd](#smtpd-conf)
 * [Configure Postfix service](#main-cf)
