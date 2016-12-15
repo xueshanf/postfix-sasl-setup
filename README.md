@@ -1,4 +1,4 @@
-## Configure a Postfix server to allow SASL authentication 
+## Configure a Postfix server to Allow SASL Authentication 
 
 Postfix version used in this documentation is 2.9.6-2. All change made to /etc/postfix/main.cf and /etc/postfix/master.cf need a Postfix service reload. You should adjust your setup with your own domain and SASL user database.
 
